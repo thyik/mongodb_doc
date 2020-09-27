@@ -86,6 +86,31 @@ db.users.insert([
     Remarks:""
   }
 ])
+
+db.users.insert([
+{
+    Id: 104,
+    userName: "Jenny",
+    mail: "Jenny@gmail.com" ,
+    mobile: 92919999,
+    Transaction: [
+                    {
+                      ItemId:"a100",
+                      price: 100
+                    },
+                    {
+                      ItemId:"a111",
+                      price: 2000
+                    }
+                  ],
+    Payment: {
+      Type: "Credit-Card",
+      Total: 1300,
+      Success: true
+    },
+    Remarks:""
+  }
+])
 ```
 
 -   Search for total payment > 700
@@ -118,6 +143,32 @@ db.users.aggregate([{
                   }])
 
 // ? how to which record have the max-min transaction price?
+db.users.aggregate([{
+            $project:{
+                      Maximun: { $max:"$Transaction.price"},
+                      Minimun: { $min:"$Transaction.price"}
+                      }
+                  },
+                  {$group: {_id:"", maximun:{$max:"$Maximun"}}}
+                  ])
+
+db.users.aggregate([
+                  {$group: {_id:"", transactionPrice:{$push:"$Transaction.price"}}}])
+
+db.users.aggregate([
+                  {$group: {_id:"", transactionPrice:{$push:"$Transaction.price"}}}
+                  ,{$project:{
+                      Maximun: { $max:"$transactionPrice"},
+                      Minimun: { $min:"$transactionPrice"}
+                      }}
+                  ,
+])
+
+db.users.aggregate([
+                  {$group: {_id:"", transactionPrice:{$addToSet:"$Transaction.price"}}}])
+
+db.users.aggregate([
+                  {$project: {transactionPrice:{$max:"$Transaction.price"}}}])
 ```
 
 -   Find record having highest payment and record with lowest payment

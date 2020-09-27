@@ -74,3 +74,8 @@ $ mongo
 // show record sorted by age descending (decreasing)
 > db.users.find().sort({"age":-1})
 ```
+
+## Reference
+
+-   [Mongodb](https://docs.mongodb.com/manual/reference/)
+    -   [Aggregation Operator](https://docs.mongodb.com/manual/reference/operator/aggregation/)
